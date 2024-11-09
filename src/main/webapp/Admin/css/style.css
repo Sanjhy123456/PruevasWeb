@@ -1,0 +1,492 @@
+/* =========== Google Fonts ============ */
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+/* =============== Globals ============== */
+* {
+  font-family: "Ubuntu", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --blue: #2a2185;
+  --white: #fff;
+  --gray: #f5f5f5;
+  --black1: #222;
+  --black2: #999;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+/* =============== Navigation ================ */
+.navigation {
+  position: fixed;
+  width: 300px;
+  height: 100%;
+  background: var(--blue);
+  border-left: 10px solid var(--blue);
+  transition: 0.5s;
+  overflow: hidden;
+}
+.navigation.active {
+  width: 80px;
+}
+
+.navigation ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.navigation ul li {
+  position: relative;
+  width: 100%;
+  list-style: none;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+
+.navigation ul li:hover,
+.navigation ul li.hovered {
+  background-color: var(--white);
+}
+
+.navigation ul li:nth-child(1) {
+  margin-bottom: 40px;
+  pointer-events: none;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: var(--white);
+}
+.navigation ul li:hover a,
+.navigation ul li.hovered a {
+  color: var(--blue);
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  line-height: 75px;
+  text-align: center;
+}
+.navigation ul li a .icon ion-icon {
+  font-size: 1.75rem;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding: 0 10px;
+  height: 60px;
+  line-height: 60px;
+  text-align: start;
+  white-space: nowrap;
+}
+
+/* --------- curve outside ---------- */
+.navigation ul li:hover a::before,
+.navigation ul li.hovered a::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px 35px 0 10px var(--white);
+  pointer-events: none;
+}
+.navigation ul li:hover a::after,
+.navigation ul li.hovered a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px -35px 0 10px var(--white);
+  pointer-events: none;
+}
+
+/* ===================== Main ===================== */
+.main {
+  position: absolute;
+  width: calc(100% - 300px);
+  left: 300px;
+  min-height: 100vh;
+  background: var(--white);
+  transition: 0.5s;
+}
+.main.active {
+  width: calc(100% - 80px);
+  left: 80px;
+}
+
+.topbar {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.toggle {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+.search {
+  position: relative;
+  width: 400px;
+  margin: 0 10px;
+}
+
+.search label {
+  position: relative;
+  width: 100%;
+}
+
+.search label input {
+  width: 100%;
+  height: 40px;
+  border-radius: 40px;
+  padding: 5px 20px;
+  padding-left: 35px;
+  font-size: 18px;
+  outline: none;
+  border: 1px solid var(--black2);
+}
+
+.search label ion-icon {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  font-size: 1.2rem;
+}
+
+.user {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.user img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ======================= Cards ====================== */
+.cardBox {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 30px;
+}
+
+.cardBox .card {
+  position: relative;
+  background: var(--white);
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+.cardBox .card .numbers {
+  position: relative;
+  font-weight: 500;
+  font-size: 2.5rem;
+  color: var(--blue);
+}
+
+.cardBox .card .cardName {
+  color: var(--black2);
+  font-size: 1.1rem;
+  margin-top: 5px;
+}
+
+.cardBox .card .iconBx {
+  font-size: 3.5rem;
+  color: var(--black2);
+}
+
+.cardBox .card:hover {
+  background: var(--blue);
+}
+.cardBox .card:hover .numbers,
+.cardBox .card:hover .cardName,
+.cardBox .card:hover .iconBx {
+  color: var(--white);
+}
+
+/* ================== Order Details List ============== */
+/* ================== Order Details List ============== */
+.details {
+  position: relative; /* Posicionamiento relativo para el contenido interno */
+  width: 100%; /* Puedes mantenerlo al 100% para ocupar todo el ancho disponible */
+  padding: 20px; /* Espacio interno; puedes aumentarlo para más separación */
+  display: grid; /* Usar grid para organizar el layout */
+  grid-template-columns: 2fr 1fr; /* Cambiar a 3fr 1fr podría expandir la primera columna */
+  grid-gap: 50px; /* Aumentar este valor puede dar más espacio entre columnas */
+  /* margin-top: 10px; */ /* Margen superior comentado */
+}
+
+.details .recentOrders {
+  position: relative; /* Posicionamiento relativo para el contenido interno */
+  display: grid; /* Usar grid para organizar el contenido de órdenes recientes */
+  min-height: 500px; /* Aumentar este valor (ej. 600px) para más altura en el tablero */
+  background: var(--white); /* Color de fondo blanco */
+  padding: 20px; /* Puedes aumentar el padding para más espacio interno */
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08); /* Sombra para darle profundidad al tablero */
+  border-radius: 20px; /* Bordes redondeados para un aspecto más suave */
+}
+
+.details .cardHeader {
+  display: flex; /* Usar flexbox para organizar el encabezado de la tarjeta */
+  justify-content: space-between; /* Espaciado entre los elementos en el encabezado */
+  align-items: flex-start; /* Alinear los elementos al inicio */
+}
+
+.cardHeader h2 {
+  font-weight: 600; /* Peso de la fuente para el título */
+  color: var(--blue); /* Color del texto del título */
+}
+
+.cardHeader .btn {
+  position: relative; /* Posicionamiento relativo para el botón */
+  padding: 5px 10px; /* Espaciado interno del botón */
+  background: var(--blue); /* Color de fondo del botón */
+  text-decoration: none; /* Sin subrayado en el texto del botón */
+  color: var(--white); /* Color del texto del botón */
+  border-radius: 6px; /* Bordes redondeados para el botón */
+}
+
+.details table {
+  width: 100%; /* Mantener el ancho al 100% para que ocupe todo el tablero */
+  border-collapse: collapse; /* Colapsar bordes de la tabla */
+  margin-top: 20px; /* Ajustar si necesitas más espacio arriba */
+}
+
+.details table thead td {
+  font-weight: 600; /* Peso de la fuente para los encabezados de la tabla */
+}
+
+.details .recentOrders table tr {
+  color: var(--black1); /* Color de texto para las filas de la tabla */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Línea divisoria entre filas */
+}
+
+.details .recentOrders table tr:last-child {
+  border-bottom: none; /* Eliminar borde en la última fila */
+}
+
+.details .recentOrders table tbody tr:hover {
+  background: var(--blue); /* Color de fondo en hover para mejorar la visibilidad */
+  color: var(--white); /* Color del texto en hover */
+}
+
+.details .recentOrders table tr td {
+  padding: 20px; /* Aumentar el padding aquí dará más espacio entre las celdas */
+}
+
+.details .recentOrders table tr td:last-child {
+  text-align: end; /* Alinear el texto a la derecha en la última celda */
+}
+
+.details .recentOrders table tr td:nth-child(2) {
+  text-align: end; /* Alinear el texto a la derecha en la segunda celda */
+}
+
+.details .recentOrders table tr td:nth-child(3) {
+  text-align: center; /* Centrar el texto en la tercera celda */
+}
+
+/* Estilos para los diferentes estados de la orden */
+.status.delivered {
+  padding: 2px 4px; /* Espaciado interno para la etiqueta de estado */
+  background: #8de02c; /* Color de fondo para estado entregado */
+  color: var(--white); /* Color del texto */
+  border-radius: 4px; /* Bordes redondeados para la etiqueta de estado */
+  font-size: 14px; /* Tamaño de la fuente */
+  font-weight: 500; /* Peso de la fuente */
+}
+
+.status.pending {
+  padding: 2px 4px; /* Espaciado interno para la etiqueta de estado */
+  background: #e9b10a; /* Color de fondo para estado pendiente */
+  color: var(--white); /* Color del texto */
+  border-radius: 4px; /* Bordes redondeados para la etiqueta de estado */
+  font-size: 14px; /* Tamaño de la fuente */
+  font-weight: 500; /* Peso de la fuente */
+}
+
+.status.return {
+  padding: 2px 4px; /* Espaciado interno para la etiqueta de estado */
+  background: #f00; /* Color de fondo para estado de devolución */
+  color: var(--white); /* Color del texto */
+  border-radius: 4px; /* Bordes redondeados para la etiqueta de estado */
+  font-size: 14px; /* Tamaño de la fuente */
+  font-weight: 500; /* Peso de la fuente */
+}
+
+.status.inProgress {
+  padding: 2px 4px; /* Espaciado interno para la etiqueta de estado */
+  background: #1795ce; /* Color de fondo para estado en progreso */
+  color: var(--white); /* Color del texto */
+  border-radius: 4px; /* Bordes redondeados para la etiqueta de estado */
+  font-size: 14px; /* Tamaño de la fuente */
+  font-weight: 500; /* Peso de la fuente */
+}
+
+.recentCustomers {
+  position: relative; /* Posicionamiento relativo para el contenido interno */
+  display: grid; /* Usar grid para organizar el contenido de clientes recientes */
+  min-height: 500px; /* Altura mínima para el contenedor de clientes recientes */
+  padding: 20px; /* Espacio interno */
+  background: var(--white); /* Color de fondo blanco */
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08); /* Sombra para darle profundidad */
+  border-radius: 20px; /* Bordes redondeados para un aspecto más suave */
+}
+
+.recentCustomers .imgBx {
+  position: relative; /* Posicionamiento relativo para la imagen del cliente */
+  width: 40px; /* Ancho de la imagen */
+  height: 40px; /* Altura de la imagen */
+  border-radius: 50px; /* Bordes redondeados para hacer la imagen circular */
+  overflow: hidden; /* Ocultar cualquier contenido que se salga del contenedor */
+}
+
+.recentCustomers .imgBx img {
+  position: absolute; /* Posicionamiento absoluto para la imagen */
+  top: 0; /* Alinear en la parte superior */
+  left: 0; /* Alinear a la izquierda */
+  width: 100%; /* Hacer que la imagen ocupe todo el ancho del contenedor */
+  height: 100%; /* Hacer que la imagen ocupe toda la altura del contenedor */
+  object-fit: cover; /* Asegurarse de que la imagen cubra el contenedor sin distorsión */
+}
+
+.recentCustomers table tr td {
+  padding: 12px 10px; /* Espaciado interno para las celdas de la tabla de clientes recientes */
+}
+
+.recentCustomers table tr td h4 {
+  font-size: 16px; /* Tamaño de la fuente para el nombre del cliente */
+  font-weight: 500; /* Peso de la fuente */
+  line-height: 1.2rem; /* Altura de línea para mejor legibilidad */
+}
+
+.recentCustomers table tr td h4 span {
+  font-size: 14px; /* Tamaño de la fuente para la información adicional */
+  color: var(--black2); /* Color de texto para la información adicional */
+}
+
+.recentCustomers table tr:hover {
+  background: var(--blue); /* Color de fondo en hover para mejorar la visibilidad */
+  color: var(--white); /* Color del texto en hover */
+}
+
+.recentCustomers table tr:hover td h4 span {
+  color: var(--white); /* Cambiar el color del texto adicional en hover */
+}
+
+/* ====================== Responsive Design ========================== */
+@media (max-width: 991px) {
+  .navigation {
+    left: -300px;
+  }
+  .navigation.active {
+    width: 300px;
+    left: 0;
+  }
+  .main {
+    width: 100%;
+    left: 0;
+  }
+  .main.active {
+    left: 300px;
+  }
+  .cardBox {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .details {
+    grid-template-columns: 1fr;
+  }
+  .recentOrders {
+    overflow-x: auto;
+  }
+  .status.inProgress {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardBox {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .cardHeader h2 {
+    font-size: 20px;
+  }
+  .user {
+    min-width: 40px;
+  }
+  .navigation {
+    width: 100%;
+    left: -100%;
+    z-index: 1000;
+  }
+  .navigation.active {
+    width: 100%;
+    left: 0;
+  }
+  .toggle {
+    z-index: 10001;
+  }
+  .main.active .toggle {
+    color: #fff;
+    position: fixed;
+    right: 0;
+    left: initial;
+  }
+}

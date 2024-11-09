@@ -1,0 +1,60 @@
+/* styles.css */
+
+/* Estilo del logo del administrador en la barra lateral */
+.admin-logo {
+    width: 80px;
+    border-radius: 50%;
+}
+
+/* Sidebar - Fondo oscuro y estilo del texto */
+#sidebarMenu {
+    background-color: #343a40;
+}
+
+#sidebarMenu .nav-link {
+    color: #adb5bd;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 10px 15px;
+    transition: background-color 0.2s ease;
+}
+
+#sidebarMenu .nav-link i {
+    font-size: 1.2rem;
+}
+
+/* Hover sobre los enlaces del menú */
+#sidebarMenu .nav-link:hover {
+    background-color: #495057;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Estilo del texto en submenú de mantenimiento */
+#maintenanceMenu .nav-link {
+    color: #ced4da;
+    font-size: 0.95rem;
+}
+
+#maintenanceMenu .nav-link:hover {
+    background-color: #6c757d;
+    color: #ffffff;
+}
+
+/* Estilo del botón de cerrar sesión */
+.btn-outline-light.bg-dark {
+    border-color: #495057;
+}
+
+.btn-outline-light.bg-dark:hover {
+    background-color: #212529;
+    border-color: #6c757d;
+}
+
+/* Main content */
+main {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
