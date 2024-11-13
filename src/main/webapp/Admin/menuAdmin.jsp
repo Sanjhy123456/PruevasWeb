@@ -1,8 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page import="java.util.List"%>
-<%@page import="DAO.PersonaDAO"%>
-<%@page import="Modelo.Persona"%>
-
+<%@page import="Modelo.Productos"%>
+<%@page import="DAO.ProductoDAO"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +9,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Admin Dashboard | Personas</title>
+    <title>Responsive Admin Dashboard | Korsat X Parmaga</title>
     <!-- ======= Styles ====== -->
     <link rel="stylesheet" href="../Admin/css/style.css">
 </head>
@@ -18,23 +17,39 @@
 <body>
     <!-- =============== Navigation ================ -->
   <div class="container">
-     
+      
+      <!-- =============== Eliminar ================ -->
+    <%
+            String mensaje = null;
+            String accion = request.getParameter("accion");
+            if ("eliminar".equals(accion)) {
+                int codProducto = Integer.parseInt(request.getParameter("codProducto"));
+                ProductoDAO productoDAO = new ProductoDAO();
+                boolean eliminado = productoDAO.eliminarProducto(codProducto);
+                if (eliminado) {
+                    mensaje = "Producto eliminado con éxito";
+                } else {
+                    mensaje = "Error al eliminar el producto";
+                }
+            }
+        %> has tipo asi para le eliminar Peronsa
+
         <div class="navigation">
             <ul>
                 <li>
-                    <a href="../Admin/num.jsp">
+                    <a href="../Admin/menuAdmin.jsp">
                         <span class="icon">
-                            <ion-icon name="#"></ion-icon>
+                            <ion-icon name=""></ion-icon>
                         </span>
-                        <span class="title">Panel de Administrador</span>
+                        <span class="title">Productos</span>
                     </a>
                 </li>
                 <li>
-                    <a href="../Admin/num.jsp">
+                    <a href="../Admin/menu.jsp">
                         <span class="icon">
                             <ion-icon name="home-outline"></ion-icon>
                         </span>
-                        <span class="title">Producto</span>
+                        <span class="title">Prodcutos</span>
                     </a>
                 </li>
                 <li>
@@ -42,7 +57,7 @@
                         <span class="icon">
                             <ion-icon name="people-outline"></ion-icon>
                         </span>
-                        <span class="title">Customers</span>
+                        <span class="title">Personas</span>
                     </a>
                 </li>
                 <li>
@@ -78,11 +93,11 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="../LoginServlet?action=cerrarSesion">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
                         </span>
-                        <span class="title">Sign Out</span>
+                        <span class="title">Cerrar Sesion</span>
                     </a>
                 </li>
             </ul>
@@ -109,7 +124,6 @@
 
             <!-- ======================= Cards ================== -->
             <div class="cardBox">
-                 
                 <div class="card">
                     <div>
                         <div class="numbers">0</div>
@@ -140,88 +154,80 @@
                     </div>
                 </div>
 
-             
+                <div class="card">
+                    <div>
+                        <div class="numbers">$7,842</div>
+                        <div class="cardName">Earning</div>
+                    </div>
+                    <div class="iconBx">
+                        <ion-icon name="cash-outline"></ion-icon>
+                    </div>
+                </div>
             </div>
 
             <!-- ================ Order Details List ================= -->
              <div class="details">
                   <div class="recentOrders">
-                      <%
-            // Inicializa el DAO y obtiene la lista de usuarios
-            PersonaDAO personaDAO = new PersonaDAO();
-            List<Persona> usuarios = personaDAO.obtenerDatos();
-
-            // Manejo de mensajes
-            String mensaje = request.getParameter("mensaje");
-            if (mensaje != null) {
-                out.println("<div class='alert alert-success'>" + mensaje + "</div>");
-            }
-        %>
                         <div class="cardHeader">
                             <h2>Recent Orders</h2>
-                            <a href="../Usuarios/Registrar.jsp" class="btn">Registrar Nuevo Usuario</a>
+                            <a href="../Producto/Registrar.jsp" class="btn">RegistrarProductoNuevo</a>
                         </div>
                         <table >
                             <thead >
                                 <tr>
-                                    <th>DNI</th>
+                                    <th>Código</th>
                                     <th>Nombre</th>
-                                    <th>Apellido</th>
-                                    <th>Correo</th>
-                                    <th>Teléfono</th>
-                                    <th>Rol</th>
+                                    <th>Detalle</th>
+                                    <th>Descripción</th>
+                                    <th>Precio</th>
+                                    <th>Categoría</th>
+                                    <th>Imagen</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                 <%
-                        for (Persona usuario : usuarios) {
-                               %>
+                                <%
+                                    ProductoDAO productoDAO = new ProductoDAO();
+                                    List<Productos> productos = productoDAO.obtenerTodosLosProductos();
+
+                                    for (Productos producto : productos) {
+                                %>
                                 <tr>
-                                     <td><%= usuario.getDni() %></td>
-                                     <td><%= usuario.getNombre() %></td>
-                                      <td><%= usuario.getApellido() %></td>
-                                      <td><%= usuario.getCorreo() %></td>
-                                      <td><%= usuario.getTelefono() %></td>
-                                      <td><%= usuario.getCod_rol() %></td>
-                             
+                                    <td><%= producto.getCodProducto() %></td>
+                                    <td><%= producto.getNombre() %></td>
+                                    <td><%= producto.getDetalle() %></td>
+                                    <td><%= producto.getDescripcion() %></td>
+                                    <td><%= producto.getPrecio() %></td>
+                                    <td><%= producto.getCodCategoria() %></td>
+                                    <td>
+                                        <img src="../ProImagenServlet?codProducto=<%= producto.getCodProducto() %>" 
+                                             alt="Imagen de <%= producto.getNombre() %>" 
+                                             style="width:100px; height:auto;" 
+                                             onerror="this.onerror=null; this.src='ruta_por_defecto.jpg';" />
+                                    </td>
                                      <td>
                             <!-- Botón de eliminación con enlace que activa la acción -->
-                              <form action="../Admin/num2.jsp" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
-                                <input type="hidden" name="dni" value="<%= usuario.getDni() %>">
+                            <form action="../Admin/num.jsp" method="get" style="display:inline;">
+                                <input type="hidden" name="codProducto" value="<%= producto.getCodProducto() %>">
                                 <input type="hidden" name="accion" value="eliminar">
                                 <button type="submit" class="btn btn-danger">Eliminar</button>
                             </form>
-                            <button class="btn btn-warning" onclick="window.location.href='../Usuarios/Actualizar.jsp?dni=<%= usuario.getDni() %>'">Actualizar</button>
-                        </td>
+                            <button class="btn btn-warning" onclick="window.location.href='../Producto/Actualizar.jsp?codProducto=<%= producto.getCodProducto() %>'">Actualizar</button>
+                        </td>   
                     </tr>
                     <%
-                        } // Fin del ciclo for
+                        }
                     %>
                             </tbody>
                         </table>
+                            <%-- Manejar eliminación del producto --%>
 
                     </div>
-                             <%
-            // Manejar la eliminación después de la acción del formulario
-            String accion = request.getParameter("accion");
-            if ("eliminar".equals(accion)) {
-                try {
-                    int dniEliminar = Integer.parseInt(request.getParameter("dni"));
-                    boolean eliminado = personaDAO.eliminar(dniEliminar);
-                    if (eliminado) {
-                        response.sendRedirect("../Admin/num2.jsp?mensaje=Usuario eliminado con éxito");
-                    } else {
-                        response.sendRedirect("../Admin/num2.jsp?mensaje=Error al eliminar el usuario");
-                    }
-                } catch (NumberFormatException e) {
-                    response.sendRedirect("../Admin/num2.jsp?mensaje=El DNI proporcionado no es válido");
-                }
-            }
-        %>
+            
                     </div>
+            
+            
         </div>
-                           
     </div>
 
     <!-- =========== Scripts =========  -->

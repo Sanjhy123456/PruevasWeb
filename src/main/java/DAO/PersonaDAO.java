@@ -8,14 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class PersonaDAO {
 
     Connection conex;
-
+    BCryptPasswordEncoder passwordEncoder;
     public PersonaDAO() {
         ConexionBD cn = new ConexionBD();
         conex = cn.getConnection();
+        passwordEncoder = new BCryptPasswordEncoder();
     }
 
     // Método para listar personas
@@ -44,18 +46,35 @@ public class PersonaDAO {
     }
 
     // Método para agregar persona
-   public boolean agregar(Persona persona) {
-    String sql = "INSERT INTO persona (dni, nombre, apellido, correo, telefono, contraseña, cod_ubicacion_cliente, cod_rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+  
+public boolean agregar(Persona persona) {
+    String sql;
+    // Si no se ha definido una ubicación, omitir `cod_ubicacion_cliente` del INSERT
+    if (persona.getCod_ubicacion_cliente() == 0) {
+        sql = "INSERT INTO persona (dni, nombre, apellido, correo, telefono, contraseña, cod_rol) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    } else {
+        sql = "INSERT INTO persona (dni, nombre, apellido, correo, telefono, contraseña, cod_ubicacion_cliente, cod_rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    }
+
     try (PreparedStatement ps = conex.prepareStatement(sql)) {
         ps.setInt(1, persona.getDni());
         ps.setString(2, persona.getNombre());
         ps.setString(3, persona.getApellido());
         ps.setString(4, persona.getCorreo());
         ps.setInt(5, persona.getTelefono());
-        ps.setString(6, persona.getContraseña());
-        ps.setInt(7, persona.getCod_ubicacion_cliente()); // Agregar cod_ubicacion_cliente
-        ps.setInt(8, persona.getCod_rol()); // Agregar cod_rol
-        
+
+        // Encriptar la contraseña antes de guardarla
+        String contraseñaEncriptada = passwordEncoder.encode(persona.getContraseña());
+        ps.setString(6, contraseñaEncriptada);
+
+        // Manejar cod_rol
+        if (persona.getCod_ubicacion_cliente() == 0) {
+            ps.setInt(7, persona.getCod_rol()); // Establece cod_rol como el séptimo parámetro si no hay ubicación
+        } else {
+            ps.setInt(7, persona.getCod_ubicacion_cliente());
+            ps.setInt(8, persona.getCod_rol()); // Establece cod_rol como el octavo parámetro si hay ubicación
+        }
+
         // Ejecutar la consulta y verificar las filas afectadas
         int filasAfectadas = ps.executeUpdate();
         if (filasAfectadas > 0) {
@@ -104,7 +123,10 @@ public boolean actualizar(Persona usuario) {
         pstmt.setString(2, usuario.getApellido());
         pstmt.setString(3, usuario.getCorreo());
         pstmt.setInt(4, usuario.getTelefono());
-        pstmt.setString(5, usuario.getContraseña());
+         // Encriptar la contraseña antes de actualizarla
+        String contraseñaEncriptada = passwordEncoder.encode(usuario.getContraseña());
+        pstmt.setString(5, contraseñaEncriptada);
+
         pstmt.setInt(6, usuario.getCod_ubicacion_cliente());
         pstmt.setInt(7, usuario.getCod_rol()); // cod_rol es el último
         pstmt.setInt(8, usuario.getDni());
@@ -135,30 +157,58 @@ public boolean actualizar(Persona usuario) {
             return false;
         }
     }
-    //Login 
-  public Persona validarCredenciales(String correo, String contraseña) {
-    String sql = "SELECT * FROM persona WHERE correo = ? AND contraseña = ?";
+    
+        //LLLLOOOOOOOGGGGGIIIIINNNNN///////////////////////////////////////
+ public Persona validarCredenciales(String correo, String contraseña) {
+    String sql = "SELECT * FROM persona WHERE correo = ?";
+
     try (PreparedStatement ps = conex.prepareStatement(sql)) {
         ps.setString(1, correo);
-        ps.setString(2, contraseña);
         ResultSet rs = ps.executeQuery();
+
         if (rs.next()) {
-            Persona usuario = new Persona();
-            usuario.setDni(rs.getInt("dni"));
-            usuario.setNombre(rs.getString("nombre"));
-            usuario.setApellido(rs.getString("apellido"));
-            usuario.setCorreo(rs.getString("correo"));
-            usuario.setTelefono(rs.getInt("telefono"));
-            usuario.setContraseña(rs.getString("contraseña"));
-            usuario.setCod_ubicacion_cliente(rs.getInt("cod_ubicacion_cliente"));
-            usuario.setCod_rol(rs.getInt("cod_rol"));
-            return usuario;
+            // Recuperamos la contraseña desde la base de datos
+            String contraseñaEncriptada = rs.getString("contraseña");
+
+            // Intentamos verificar la contraseña con encriptación (si es encriptada)
+            if (passwordEncoder.matches(contraseña, contraseñaEncriptada)) {
+                // Contraseña válida con encriptación
+                Persona usuario = new Persona();
+                usuario.setDni(rs.getInt("dni"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setApellido(rs.getString("apellido"));
+                usuario.setCorreo(rs.getString("correo"));
+                usuario.setTelefono(rs.getInt("telefono"));
+                usuario.setContraseña(rs.getString("contraseña")); // Aquí la contraseña encriptada
+                usuario.setCod_ubicacion_cliente(rs.getInt("cod_ubicacion_cliente"));
+                usuario.setCod_rol(rs.getInt("cod_rol"));
+                return usuario;
+            } else {
+                // Si no es encriptada, comparamos con la contraseña en texto claro
+                // Esto es para las contraseñas que no han sido encriptadas
+                if (contraseña.equals(contraseñaEncriptada)) {
+                    // Contraseña válida sin encriptación
+                    Persona usuario = new Persona();
+                    usuario.setDni(rs.getInt("dni"));
+                    usuario.setNombre(rs.getString("nombre"));
+                    usuario.setApellido(rs.getString("apellido"));
+                    usuario.setCorreo(rs.getString("correo"));
+                    usuario.setTelefono(rs.getInt("telefono"));
+                    usuario.setContraseña(rs.getString("contraseña")); // Aquí la contraseña en texto claro
+                    usuario.setCod_ubicacion_cliente(rs.getInt("cod_ubicacion_cliente"));
+                    usuario.setCod_rol(rs.getInt("cod_rol"));
+                    return usuario;
+                }
+            }
         }
     } catch (SQLException e) {
         System.out.println("Error en la validación de credenciales: " + e.getMessage());
     }
-    return null; // Si no se encuentra, devuelve null
+    return null; // Si no se encuentra el correo o no coincide la contraseña
 }
+
+ 
+ 
 ///parte del login
 public boolean registrarLogin(Persona persona) {
     String sql = "INSERT INTO persona (dni, nombre, apellido, correo, telefono, contraseña, cod_ubicacion_cliente, cod_rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -170,6 +220,10 @@ public boolean registrarLogin(Persona persona) {
         ps.setInt(5, persona.getTelefono());
         ps.setString(6, persona.getContraseña());
 
+        // Encriptar la contraseña antes de guardarla
+        String contraseñaEncriptada = passwordEncoder.encode(persona.getContraseña());
+        ps.setString(6, contraseñaEncriptada);
+        
         // Manejar cod_ubicacion_cliente
         if (persona.getCod_ubicacion_cliente() == 0) {
             ps.setNull(7, java.sql.Types.INTEGER); // Establecer como NULL si es 0
@@ -190,9 +244,7 @@ public boolean registrarLogin(Persona persona) {
         return false;
     }
 }
-
-    public boolean registrarPersona(Persona nuevoUsuario) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    
+    
+    
 }

@@ -20,7 +20,7 @@
                 <div class="position-sticky pt-3">
                     <div class="text-center mb-3">
                         <img src="path/to/admin-logo.png" alt="Admin Logo" class="admin-logo mb-3">
-                        <h4 class="text-white">Panel de Administración</h4>
+                        <h4 class="text-white">Cliente</h4>
                     </div>
                     <ul class="nav flex-column fs-5">
                         <!-- Home -->
@@ -50,7 +50,7 @@
                         <!-- Settings -->
                         <li class="nav-item">
                             <a class="nav-link text-light" href="settings.jsp">
-                                <i class="bi bi-gear-fill me-2"></i> Configuración
+                                <i class="bi bi-gear-fill me-2"></i> Configuración de Datos
                             </a>
                         </li>
                     </ul>

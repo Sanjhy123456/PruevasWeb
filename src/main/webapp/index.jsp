@@ -62,7 +62,7 @@
 
         <div class="text-center mt-4">
             <button class="btn btn-success" onclick="window.location.href='Producto/Registrar.jsp'">Agregar Producto</button>
-            <button class="btn btn-success" onclick="window.location.href='Admin/num2.jsp'">Usuarios</button>
+            <button class="btn btn-success" onclick="window.location.href='Admin/menuAdmin.jsp'">Usuarios</button>
               
             <!-- Inicio Login -->
             <%
@@ -76,13 +76,13 @@
             } else {
             %>
             <p><a href="login.jsp">inicia sesión</a>.</p>
-            <%s
+            <%
             }
             %>
             <!-- Fin Login -->
             <button class="btn btn-primary" onclick="window.location.href='Menu.jsp'">Menu</button>
-            <button class="btn btn-primary" onclick="window.location.href='Admin/menu.jsp'">Menu</button>
-            <button class="btn btn-primary" onclick="window.location.href='Admin/num.jsp'">Num</button>
+            <button class="btn btn-primary" onclick="window.location.href='Admin/menu2.jsp'">MenuP</button>
+            <button class="btn btn-primary" onclick="window.location.href='Admin/menuAdmin.jsp'"></button>
         </div>
 
         <h2 class="text-center mt-5">Productos Registrados</h2>

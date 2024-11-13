@@ -37,16 +37,12 @@
                 <input type="password" class="form-control" name="contraseña" required>
             </div>
             <div class="form-group">
-                <label for="cod_ubicacion_cliente">Código de Ubicación</label>
-                <input type="number" class="form-control" name="cod_ubicacion_cliente" required>
-            </div>
-            <div class="form-group">
                 <label for="cod_rol">Rol</label>
                 <select class="form-control" name="cod_rol" required>
                     <option value="">Seleccione un Rol</option>
                     <option value="1">Administrador</option>
-                    <option value="2">Cliente</option>
-                    <option value="3">Trabajador</option>
+                    <option value="2">Trabajador</option>
+                    <option value="3">Cliente</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-success">Registrar Usuario</button>
