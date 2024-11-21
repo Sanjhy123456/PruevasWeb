@@ -60,6 +60,18 @@
         <version>3.1.4</version> <!-- Versión compatible con JDK 21 y Jakarta EE 10 -->
     </dependency>
   
+  
+  <dependency>
+    <groupId>javax.mail</groupId>
+    <artifactId>javax.mail-api</artifactId>
+    <version>1.6.2</version>
+</dependency>
+<dependency>
+    <groupId>com.sun.mail</groupId>
+    <artifactId>javax.mail</artifactId>
+    <version>1.6.2</version>
+</dependency>
+
     
     
     </dependencies>

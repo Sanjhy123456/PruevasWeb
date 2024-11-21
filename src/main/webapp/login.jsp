@@ -17,5 +17,6 @@
     </c:if>
 
     <a href="registro.jsp">Registrarse</a>
+    <a href="recuperarcontraceña/actualizarcontraceña.jsp">¿Olvidaste tu contraseña?</a>
 </body>
 </html>

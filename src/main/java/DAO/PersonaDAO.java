@@ -2,13 +2,16 @@ package DAO;
 
 import Conexion.ConexionBD;
 import Modelo.Persona;
+import Email.EmailService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.mail.MessagingException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class PersonaDAO {
 
@@ -232,7 +235,7 @@ public boolean registrarLogin(Persona persona) {
         }
 
         // Establecer cod_rol como 2
-        ps.setInt(8, 2);
+        ps.setInt(8, 3);
 
         int filasAfectadas = ps.executeUpdate();
         System.out.println("Filas afectadas: " + filasAfectadas);
@@ -245,6 +248,49 @@ public boolean registrarLogin(Persona persona) {
     }
 }
     
-    
+
+//Metodo Recuperar Contraceña
+
+// Método para obtener una persona por su DNI
+    public Persona obtenerPersonaPorDNI(int dni) {
+        Persona persona = null;
+        String query = "SELECT * FROM persona WHERE dni = ?";
+
+        try (PreparedStatement stmt = conex.prepareStatement(query)) {
+            stmt.setInt(1, dni);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                // Crear el objeto Persona con los datos de la base de datos
+                persona = new Persona();
+                persona.setDni(rs.getInt("dni"));
+                persona.setNombre(rs.getString("nombre"));
+                persona.setApellido(rs.getString("apellido"));
+                persona.setCorreo(rs.getString("correo"));
+                persona.setTelefono(rs.getInt("telefono"));
+                persona.setContraseña(rs.getString("contraseña"));
+                persona.setCod_ubicacion_cliente(rs.getInt("cod_ubicacion_cliente"));
+                persona.setCod_rol(rs.getInt("cod_rol"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return persona;
+    }
+
+    // Método para actualizar la contraseña de una persona por su DNI
+    public boolean actualizarContraseña(int dni, String nuevaContraseña) {
+        String query = "UPDATE persona SET contraseña = ? WHERE dni = ?";
+
+        try (PreparedStatement stmt = conex.prepareStatement(query)) {
+            stmt.setString(1, nuevaContraseña); // Contraseña encriptada
+            stmt.setInt(2, dni);
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0; // Si se actualizó al menos una fila, la operación fue exitosa
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     
 }

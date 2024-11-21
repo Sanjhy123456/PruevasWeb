@@ -2,6 +2,7 @@ package Controlador;
 
 import Modelo.Persona;
 import DAO.PersonaDAO;
+import Email.EmailService;
 import com.google.common.base.Preconditions;
 
 import jakarta.servlet.ServletException;
@@ -75,7 +76,7 @@ public class LoginServlet extends HttpServlet {
 
             // Redirigir según el rol
             if (usuario.getCod_rol() == 1 || usuario.getCod_rol() == 3) {
-                response.sendRedirect("Admin/num.jsp");
+                response.sendRedirect("Admin/menuAdmin.jsp");
             } else if (usuario.getCod_rol() == 2) {
                 response.sendRedirect("index.jsp");
             }
@@ -120,6 +121,7 @@ public class LoginServlet extends HttpServlet {
 
         // Intentar registrar el usuario
         if (personaDAO.registrarLogin(persona)) {
+              EmailService.sendWelcomeEmail(correo);
             response.sendRedirect("login.jsp?success=true"); // Redirigir con mensaje de éxito
         } else {
             response.sendRedirect("login.jsp?error=registro_fallido"); // Redirigir con mensaje de error

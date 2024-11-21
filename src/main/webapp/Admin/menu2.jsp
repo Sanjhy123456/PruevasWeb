@@ -30,7 +30,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="../Admin/num.jsp">
+                    <a href="../Admin/menuAdmin.jsp">
                         <span class="icon">
                             <ion-icon name="home-outline"></ion-icon>
                         </span>
@@ -187,7 +187,7 @@
                              
                                      <td>
                             <!-- Botón de eliminación con enlace que activa la acción -->
-                              <form action="../Admin/num2.jsp" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                              <form action="../Admin/menu2.jsp" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
                                 <input type="hidden" name="dni" value="<%= usuario.getDni() %>">
                                 <input type="hidden" name="accion" value="eliminar">
                                 <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -210,12 +210,12 @@
                     int dniEliminar = Integer.parseInt(request.getParameter("dni"));
                     boolean eliminado = personaDAO.eliminar(dniEliminar);
                     if (eliminado) {
-                        response.sendRedirect("../Admin/num2.jsp?mensaje=Usuario eliminado con éxito");
+                        response.sendRedirect("../Admin/menu2.jsp?mensaje=Usuario eliminado con éxito");
                     } else {
-                        response.sendRedirect("../Admin/num2.jsp?mensaje=Error al eliminar el usuario");
+                        response.sendRedirect("../Admin/menu2.jsp?mensaje=Error al eliminar el usuario");
                     }
                 } catch (NumberFormatException e) {
-                    response.sendRedirect("../Admin/num2.jsp?mensaje=El DNI proporcionado no es válido");
+                    response.sendRedirect("../Admin/menu2.jsp?mensaje=El DNI proporcionado no es válido");
                 }
             }
         %>

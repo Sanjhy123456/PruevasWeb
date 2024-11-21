@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="../Admin/menu.jsp">
+                    <a href="../Admin/menuAdmin.jsp">
                         <span class="icon">
                             <ion-icon name="home-outline"></ion-icon>
                         </span>
@@ -53,7 +53,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="../Admin/num2.jsp">
+                    <a href="../Admin/menu2.jsp">
                         <span class="icon">
                             <ion-icon name="people-outline"></ion-icon>
                         </span>
@@ -207,7 +207,7 @@
                                     </td>
                                      <td>
                             <!-- Botón de eliminación con enlace que activa la acción -->
-                            <form action="../Admin/num.jsp" method="get" style="display:inline;">
+                            <form action="../Admin/menuAdmin.jsp" method="get" style="display:inline;">
                                 <input type="hidden" name="codProducto" value="<%= producto.getCodProducto() %>">
                                 <input type="hidden" name="accion" value="eliminar">
                                 <button type="submit" class="btn btn-danger">Eliminar</button>
