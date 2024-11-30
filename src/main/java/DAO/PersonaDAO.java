@@ -3,6 +3,7 @@ package DAO;
 import Conexion.ConexionBD;
 import Modelo.Persona;
 import Email.EmailService;
+import Modelo.HistorialEliminacion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -279,9 +280,9 @@ public boolean registrarLogin(Persona persona) {
 
     // Método para actualizar la contraseña de una persona por su DNI
     public boolean actualizarContraseña(int dni, String nuevaContraseña) {
-        String query = "UPDATE persona SET contraseña = ? WHERE dni = ?";
+        String sql = "UPDATE persona SET contraseña = ? WHERE dni = ?";
 
-        try (PreparedStatement stmt = conex.prepareStatement(query)) {
+        try (PreparedStatement stmt = conex.prepareStatement(sql)) {
             stmt.setString(1, nuevaContraseña); // Contraseña encriptada
             stmt.setInt(2, dni);
             int rowsUpdated = stmt.executeUpdate();
@@ -292,5 +293,4 @@ public boolean registrarLogin(Persona persona) {
         }
     }
 
-    
 }

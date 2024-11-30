@@ -2,6 +2,8 @@
 <%@page import="java.util.List"%>
 <%@page import="DAO.PersonaDAO"%>
 <%@page import="Modelo.Persona"%>
+<%@ page import="DAO.HistorialEliminacionDAO" %>
+<%@page import="Modelo.HistorialEliminacion"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +48,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="../Admin/menu3.jsp">
                         <span class="icon">
                             <ion-icon name="chatbubble-outline"></ion-icon>
                         </span>
@@ -202,23 +204,52 @@
                         </table>
 
                     </div>
-                             <%
-            // Manejar la eliminación después de la acción del formulario
-            String accion = request.getParameter("accion");
-            if ("eliminar".equals(accion)) {
-                try {
-                    int dniEliminar = Integer.parseInt(request.getParameter("dni"));
-                    boolean eliminado = personaDAO.eliminar(dniEliminar);
-                    if (eliminado) {
-                        response.sendRedirect("../Admin/menu2.jsp?mensaje=Usuario eliminado con éxito");
-                    } else {
-                        response.sendRedirect("../Admin/menu2.jsp?mensaje=Error al eliminar el usuario");
-                    }
-                } catch (NumberFormatException e) {
-                    response.sendRedirect("../Admin/menu2.jsp?mensaje=El DNI proporcionado no es válido");
+        <%
+    // Ya tienes esta declaración arriba, no es necesario declararla nuevamente
+    // PersonaDAO personaDAO = new PersonaDAO();  <- Elimina esta línea
+
+    // HistorialEliminacionDAO sigue siendo necesario
+    HistorialEliminacionDAO historialDAO = new HistorialEliminacionDAO();
+
+    // Obtener el parámetro de acción de eliminación
+    String accion = request.getParameter("accion");
+    if ("eliminar".equals(accion)) {
+        try {
+            // Obtener el DNI a eliminar desde el parámetro
+            int dniEliminar = Integer.parseInt(request.getParameter("dni"));
+            
+            // Primero, obtén los datos de la persona antes de eliminarla
+            Persona usuarioEliminado = personaDAO.obtenerPersonaPorDNI(dniEliminar);
+
+            if (usuarioEliminado != null) {
+                // Elimina la persona de la base de datos
+                boolean eliminado = personaDAO.eliminar(dniEliminar);
+
+                // Si la persona fue eliminada
+                if (eliminado) {
+                    // Registra la eliminación en el historial
+                    historialDAO.registrarEliminacion(usuarioEliminado);  // Usamos los datos obtenidos
+
+                    // Redirige con mensaje de éxito
+                    response.sendRedirect("../Admin/menu2.jsp?mensaje=Usuario eliminado con éxito");
+                } else {
+                    // Si la eliminación falló
+                    response.sendRedirect("../Admin/menu2.jsp?mensaje=Error al eliminar el usuario");
                 }
+            } else {
+                // Si no se encontró la persona con el DNI proporcionado
+                response.sendRedirect("../Admin/menu2.jsp?mensaje=No se encontró al usuario con el DNI proporcionado");
             }
-        %>
+        } catch (NumberFormatException e) {
+            // Redirige si el DNI no es válido
+            response.sendRedirect("../Admin/menu2.jsp?mensaje=El DNI proporcionado no es válido");
+        }
+    }
+%>
+
+
+
+
                     </div>
         </div>
                            

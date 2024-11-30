@@ -75,17 +75,17 @@ private void agregarPersona(HttpServletRequest request, HttpServletResponse resp
 
         // Verificación si la persona fue agregada correctamente
         if (personaDAO.agregar(persona)) {
-            response.sendRedirect("Admin/num2.jsp?mensaje=agregado"); // Redirigir a Persona.jsp
+            response.sendRedirect("../Admin/menu2.jsp?mensaje=agregado"); // Redirigir a Persona.jsp
         } else {
-            response.sendRedirect("Admin/num2.jsp?mensaje=Error al Agregar");
+            response.sendRedirect("Admin/menu2.jsp?mensaje=Error al Agregar");
         }
     } catch (NumberFormatException e) {
         mensaje = "Formato inválido en los datos: " + e.getMessage();
-        response.sendRedirect("Admin/num2.jsp?mensaje=" + URLEncoder.encode(mensaje, "UTF-8"));
+        response.sendRedirect("../Admin/menu2.jsp?mensaje=" + URLEncoder.encode(mensaje, "UTF-8"));
         e.printStackTrace(); // Registra el error en la consola
     } catch (Exception e) {
         mensaje = "Error al agregar persona: " + e.getMessage();
-        response.sendRedirect("Admin/num2.jsp?mensaje=" + URLEncoder.encode(mensaje, "UTF-8"));
+        response.sendRedirect("../Admin/menu2.jsp?mensaje=" + URLEncoder.encode(mensaje, "UTF-8"));
         e.printStackTrace(); // Registra cualquier otro error
     }
 }

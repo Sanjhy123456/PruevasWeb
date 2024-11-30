@@ -40,6 +40,10 @@
         <label for="imagen">Imagen:</label>
         <input type="file" class="form-control-file" name="imagen" id="imagen" accept="image/*" required>
     </div>
+    <div class="form-group">
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" class="form-control" name="cantidad" id="cantidad" min="1" value="1" required>
+    </div>
     <button type="submit" class="btn btn-success">Registrar Producto</button>
 </form>
 

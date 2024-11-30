@@ -97,6 +97,7 @@
                         <th>Precio</th>
                         <th>Categoría</th>
                         <th>Imagen</th>
+                        <th>Cantidad</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -120,6 +121,7 @@
                                  style="width:100px; height:auto;" 
                                  onerror="this.onerror=null; this.src='ruta_por_defecto.jpg';" />
                         </td>
+                        <td><%= producto.getCantidad() %></td>
                         <td>
                             <form action="index.jsp" method="get" style="display:inline;">
                                 <input type="hidden" name="codProducto" value="<%= producto.getCodProducto() %>">
@@ -128,6 +130,14 @@
                             </form>
                             <button class="btn btn-warning" onclick="window.location.href='Producto/Actualizar.jsp?codProducto=<%= producto.getCodProducto() %>'">Actualizar</button>
                             <button class="btn btn-warning" onclick="agregarAlCarrito(<%= producto.getCodProducto() %>)">Agregar Al carrito</button>
+                            <!-- Botón de Favoritos -->
+            <button id="favorito_<%= producto.getCodProducto() %>" class="btn btn-primary" onclick="agregarAFavoritos(<%= producto.getCodProducto() %>)">
+                Agregar a favoritos
+            </button>
+            <script>
+                // Verificar si el producto está en favoritos
+                esFavorito(<%= producto.getCodProducto() %>);
+            </script>
                         </td>   
                     </tr>
                     <%

@@ -41,7 +41,8 @@ public class ProductoDAO {
                         rs.getString("detalle"),
                         rs.getString("descripcion"),
                         rs.getInt("precio"),
-                        rs.getInt("cod_categoria")
+                        rs.getInt("cod_categoria"),
+                        rs.getInt("cantidad")
                 );
                 listaProductos.add(producto);
             }
@@ -53,7 +54,7 @@ public class ProductoDAO {
 // Método para agregar un producto
 // Método para agregar un producto
 public boolean agregarProducto(Productos producto) {
-    String sql = "INSERT INTO producto (cod_producto, nombre, imagen, detalle, descripcion, precio, cod_categoria) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO producto (cod_producto, nombre, imagen, detalle, descripcion, precio, cod_categoria,cantidad) VALUES (?, ?, ?, ?, ?, ?, ?,?)";
     try (PreparedStatement stmt = conex.prepareStatement(sql)) {
         stmt.setInt(1, producto.getCodProducto());
         stmt.setString(2, producto.getNombre());
@@ -65,6 +66,7 @@ public boolean agregarProducto(Productos producto) {
         stmt.setString(5, producto.getDescripcion());
         stmt.setDouble(6, producto.getPrecio()); // Asegúrate de que este método retorne un double
         stmt.setInt(7, producto.getCodCategoria());
+        stmt.setInt(8, producto.getCantidad());
         
         stmt.executeUpdate();
         return true;
@@ -117,6 +119,7 @@ public Productos obtenerProductoPorCod(int codProducto) {
             prod.setDescripcion(rs.getString("descripcion"));
             prod.setPrecio(rs.getInt("precio")); // Cambia a double si es necesario
             prod.setCodCategoria(rs.getInt("cod_categoria"));
+            prod.setCantidad(rs.getInt("cantidad"));
             return prod;
         } else {
             System.out.println("No se encontró el producto con cod_producto: " + codProducto);
@@ -131,7 +134,7 @@ public Productos obtenerProductoPorCod(int codProducto) {
 
  public boolean actualizarProducto(Productos producto) {
         // SQL para actualizar el producto
-        String sql = "UPDATE producto SET nombre=?, detalle=?, descripcion=?, precio=?, cod_categoria=?" +
+        String sql = "UPDATE producto SET nombre=?, detalle=?, descripcion=?, precio=?, cod_categoria=?,cantidad=?" +
                      (producto.getImagen() != null ? ", imagen=?" : "") + " WHERE cod_producto=?";
 
         try (PreparedStatement statement = conex.prepareStatement(sql)) {
@@ -141,8 +144,9 @@ public Productos obtenerProductoPorCod(int codProducto) {
             statement.setString(3, producto.getDescripcion());
             statement.setInt(4, producto.getPrecio());  // Usar setInt para precio
             statement.setInt(5, producto.getCodCategoria());
-
-            int index = 6;  // Índice para la imagen (si existe)
+            statement.setInt(6, producto.getCantidad());
+            
+            int index = 7;  // Índice para la imagen (si existe)
             if (producto.getImagen() != null) {
                 statement.setBlob(index++, producto.getImagen()); // Si hay nueva imagen, setearla
             }
@@ -187,6 +191,7 @@ public boolean eliminarProducto(int cod_Producto) {
                     p.setDescripcion(rs.getString("descripcion"));
                     p.setPrecio(rs.getInt("precio"));
                     p.setCodCategoria(rs.getInt("cod_categoria"));
+                     p.setCodCategoria(rs.getInt("cantidad"));
                 }
             }
         } catch (Exception e) {
@@ -194,6 +199,30 @@ public boolean eliminarProducto(int cod_Producto) {
         }
         return p;
     }
+
+    ///Carrito
+    public boolean reducirCantidad(int codProducto, int cantidad) {
+    String sql = "UPDATE producto SET cantidad = cantidad - ? WHERE cod_producto = ?";
+    try (PreparedStatement ps = conex.prepareStatement(sql)) {
+        // Establecer el valor de la cantidad que se va a reducir
+        ps.setInt(1, cantidad);
+        // Establecer el código del producto
+        ps.setInt(2, codProducto);
+
+        // Ejecutar la actualización
+        int filasAfectadas = ps.executeUpdate();
+        
+        // Si se actualizó al menos una fila, la operación fue exitosa
+        if (filasAfectadas > 0) {
+            return true;
+        } else {
+            System.out.println("No se encontró el producto con cod_producto: " + codProducto);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace(); // Imprimir traza del error
+    }
+    return false; // Si no se pudo actualizar, devuelve false
+}
 
 }
 

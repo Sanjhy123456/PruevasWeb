@@ -64,7 +64,12 @@
             <input type="file" class="form-control-file" id="imagen" name="imagen">
             <small class="form-text text-muted">Sube una nueva imagen si deseas cambiarla.</small>
         </div>
-
+        
+       <div class="form-group">
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" class="form-control" name="cantidad" id="cantidad" min="1" value="1" required>
+    </div>
+        
         <button type="submit" class="btn btn-primary">Actualizar Producto</button>
         <a href="../Admin/num2.jsp" class="btn btn-secondary">Cancelar</a>
       </form>

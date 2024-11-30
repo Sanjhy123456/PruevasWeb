@@ -55,34 +55,39 @@ public class CarritoServlet extends HttpServlet {
         boolean productoExistente = false;
         for (Carrito car : carritoList) {
             if (car.getCod_producto() == cod_producto) {
-                // Aumentar la cantidad y el subtotal
-                car.setCantidad(car.getCantidad() + 1);
-                car.setSubTotal(car.getCantidad() * p.getPrecio());
-                productoExistente = true;
+                // Verificar si la cantidad no excede la cantidad disponible en el inventario
+                int cantidadDisponible = p.getCantidad();
+                if (car.getCantidad() + 1 <= cantidadDisponible) {
+                    // Aumentar la cantidad y el subtotal
+                    car.setCantidad(car.getCantidad() + 1);
+                    car.setSubTotal(car.getCantidad() * p.getPrecio());
+                    productoExistente = true;
+                } else {
+                    // Limitar la cantidad del producto al inventario disponible
+                    car.setCantidad(cantidadDisponible);
+                    car.setSubTotal(cantidadDisponible * p.getPrecio());
+                    productoExistente = true;
+                }
                 break;
             }
         }
 
         // Si el producto no existe, agregarlo como nuevo
         if (!productoExistente) {
-            Integer itemCount = (Integer) request.getSession().getAttribute("itemCount");
-            if (itemCount == null) {
-                itemCount = 0;
+            int cantidadDisponible = p.getCantidad();
+            int cantidadAgregar = 1; // Puedes ajustar la cantidad aquí, dependiendo de tu lógica
+            if (cantidadAgregar <= cantidadDisponible) {
+                Carrito car = new Carrito();
+                car.setCod_producto(p.getCodProducto());
+                car.setNombre(p.getNombre());
+                car.setDescripcion(p.getDescripcion());
+                car.setPrecio(p.getPrecio());
+                car.setCantidad(cantidadAgregar);
+                car.setSubTotal(car.getCantidad() * p.getPrecio());
+
+                carritoList.add(car);
+                request.getSession().setAttribute("listarCarrito", carritoList);
             }
-            itemCount++;
-            request.getSession().setAttribute("itemCount", itemCount);
-
-            // Crear un nuevo objeto Carrito y agregarlo a la lista
-            Carrito car = new Carrito();
-            car.setCod_producto(p.getCodProducto());
-            car.setNombre(p.getNombre());
-            car.setDescripcion(p.getDescripcion());
-            car.setPrecio(p.getPrecio());
-            car.setCantidad(1);
-            car.setSubTotal(car.getCantidad() * p.getPrecio());
-
-            carritoList.add(car);
-            request.getSession().setAttribute("listarCarrito", carritoList);
         }
 
         // Actualizar la sesión
@@ -97,6 +102,7 @@ public class CarritoServlet extends HttpServlet {
         response.sendError(HttpServletResponse.SC_NOT_FOUND, "Producto no encontrado.");
     }
 }
+
 
 
     private void listarCarrito(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

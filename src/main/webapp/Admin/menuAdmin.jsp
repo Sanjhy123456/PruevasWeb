@@ -182,6 +182,7 @@
                                     <th>Precio</th>
                                     <th>Categoría</th>
                                     <th>Imagen</th>
+                                    <th>Cantidad</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -205,6 +206,7 @@
                                              style="width:100px; height:auto;" 
                                              onerror="this.onerror=null; this.src='ruta_por_defecto.jpg';" />
                                     </td>
+                                    <td><%= producto.getCantidad() %></td>
                                      <td>
                             <!-- Botón de eliminación con enlace que activa la acción -->
                             <form action="../Admin/menuAdmin.jsp" method="get" style="display:inline;">

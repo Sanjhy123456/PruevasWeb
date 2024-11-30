@@ -1,15 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Modelo;
 
 import java.io.InputStream;
 
-/**
- *
- * @author USER
- */
 public class Productos {
     private int cod_producto;  // Código del producto
     private String nombre;
@@ -18,13 +11,14 @@ public class Productos {
     private String descripcion;
     private int precio;
     private int cod_categoria; // Código de la categoría
+            private int cantidad;
 
     // Constructor vacío
     public Productos() {
     }
 
     // Constructor con parámetros
-    public Productos(int codproducto, String nombre, InputStream imagen, String detalle, String descripcion, int precio, int codcategoria) {
+    public Productos(int codproducto, String nombre, InputStream imagen, String detalle, String descripcion, int precio, int codcategoria, int cantidad) {
         this.cod_producto = codproducto;
         this.nombre = nombre;
         this.imagen = imagen; // Cambiado a InputStream
@@ -32,6 +26,7 @@ public class Productos {
         this.descripcion = descripcion;
         this.precio = precio;
         this.cod_categoria = codcategoria;
+        this.cantidad=cantidad;
     }
 
     // Getters y Setters
@@ -62,4 +57,12 @@ public class Productos {
     public int getCodCategoria()                    { return cod_categoria; }
     
     public void setCodCategoria(int codCategoria)   { this.cod_categoria = codCategoria; }
+
+ 
+
+    public int getCantidad() { return cantidad;}
+
+    public void setCantidad(int cantidad) {this.cantidad = cantidad;}
+    
+    
 }
